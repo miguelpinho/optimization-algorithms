@@ -1,19 +1,44 @@
-A = [1 0 0.1 0; 0 1 0 0.1; 0 0 0.9 0; 0 0 0 0.9];
-B = [0 0; 0 0; 0.1 0; 0 0.1];
-initialp = [0 5];
-finalp = [15 -15];
-initialx = [initialp; [0 0]];
-finalx = [finalp; [0 0]];
-w = [[10 10]; [20 10]; [30 10]; [30 0]; [20 0]; [10 -10]];
-tau = [10 25 30 40 50 60];
-Umax = 100;
-T = 80;
-lambda = 10.^(-3);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%               Optimization and Algorithms
+%
+%                   Part1 of the Project
+%
+%
+%
+%   Authors: 
+%         - Duarte Dias,  81356,  duarte.ferreira.dias@tecnico.ulisboa.pt
+%         - Miguel Pinho, 80826,  miguel.m.pinho@tecnico.ulisboa.pt
+%         - Pedro Mendes, 81046,  pedrogoncalomendes@tecnico.ulisboa.pt
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%load the workspace 
+load('dataA.mat');
+
+lambda1 = lambda(1);
 
 % solve optimization problem
 cvx_begin quiet
-    variable x(n);
-    minimize( expression ); %como por somatorio aqui dentro? -> calculo vetorial é uma forma, ver task2
+    variable x(4, 4);
+    variable u(1, 2);
+    
+    %cost function
+    f1 = power( norm( E*x(tau(1)) - w(1) ),2);
+    for i=2:1:k
+        f1 = f1 + ( norm( E*x(tau(i)) - w(i) )).^2;
+    end
+    
+    f2 = ( norm( u(2) - u(1) )).^2;
+    for j=3:1:T
+        f2 = f2 + ( norm( u(j) - u(j-1) )).^2;
+    end
+    
+    f = f1+(lambda1*f2);
+    
+    minimize( f ); %como por somatorio aqui dentro? -> calculo vetorial é uma forma, ver task2
     
     %subject to
     x(0) = initialx;
@@ -21,6 +46,7 @@ cvx_begin quiet
     for t = 0:T-1
         norm( u(t), 2) <= Umax;
     end
+    
     for t = 0:T-1
         x(t+1) = A*x(t) + B*u(t);
     end
