@@ -1,0 +1,5 @@
+# Windows autosave
+*.asv
+
+# Linux autosave
+*.m~
