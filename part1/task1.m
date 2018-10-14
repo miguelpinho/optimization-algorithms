@@ -13,7 +13,7 @@ lambda = 10.^(-3);
 % solve optimization problem
 cvx_begin quiet
     variable x(n);
-    minimize( expression ); %como por somatorio aqui dentro?
+    minimize( expression ); %como por somatorio aqui dentro? -> calculo vetorial é uma forma, ver task2
     
     %subject to
     x(0) = initialx;
