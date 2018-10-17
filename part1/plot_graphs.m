@@ -1,11 +1,11 @@
-function [] = plot_graphs(x, u)
+function [] = plot_graphs(x, u, time_pos, real_pos)
 
     figure(1);
     plot(x(1,:),x(2,:),'o','MarkerSize', 3, 'MarkerEdgeColor',[0 0 1]);
     hold on;
-    plot(x(1,tau), x(2,tau), 'o','MarkerSize',10, 'MarkerEdgeColor', [1 0 1]);
+    plot(x(1,time_pos), x(2,time_pos), 'o','MarkerSize',10, 'MarkerEdgeColor', [1 0 1]);
     hold on;
-    plot(w(1,:),w(2,:), 's','MarkerSize',15, 'MarkerEdgeColor', [1 0 0] );
+    plot(real_pos(1,:),real_pos(2,:), 's','MarkerSize',15, 'MarkerEdgeColor', [1 0 0] );
     grid on
 
     time_v = (0:79);
