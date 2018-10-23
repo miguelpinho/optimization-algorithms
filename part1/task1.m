@@ -16,6 +16,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all;
+
 %load the workspace 
 load('dataA.mat');
 
@@ -26,12 +27,19 @@ cvx_begin quiet
     variable x(4, T+1);% columns are R^4 state vectors
     variable u(2,   T); % columns are R^2 control signal
     
-    %cost function   
-    f_waypoints = sum(square_pos( norm(E * x(:, tau) - w, 2) ) );
-    f_regularizer = sum( square_pos ( norm(col_diff(u), 2) ) );
+    %cost function
+    f_waypoints = 0;
+    for i=1:1:k
+        f_waypoints = f_waypoints + square_pos( norm(E * x(:, tau(i) + 1) - w(:, i), 2) );
+    end
+    
+    f_regularizer = 0;
+    for i=2:1:T
+        f_regularizer = f_regularizer + square_pos ( norm(u(:, i)-u(:, i-1)) );
+    end
+    
     f = f_waypoints + lambda1 * f_regularizer;
-    
-    
+        
     minimize( f ); 
     
     %subject to
@@ -43,9 +51,19 @@ cvx_begin quiet
     end
     
     for t = 1:T
-        x(:,t+1) == A*x(:,t) + B*u(:,t);
+        x(:, t+1) == A * x(:, t) + B * u(:, t);
     end
     
 cvx_end;
 
-plot_graphs(x, u);
+
+m=0;
+for i=1:1:k
+    m = m + square_pos( norm(E * x(:, tau(i)+1) - w(:, i), 2) );
+end
+
+mean_desviation = (1/k) * m;
+disp(mean_desviation);
+
+
+plot_graphs(x, u, tau+1, w);
