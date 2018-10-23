@@ -59,10 +59,10 @@ cvx_end;
 
 m=0;
 for i=1:1:k
-    m = m + square_pos( norm(E * x(:, tau(i)+1) - w(:, i), 2) );
+    m = m + norm(E * x(:, tau(i)+1) - w(:, i), 2);
 end
 
-mean_desviation = (1/k) * m;
+mean_desviation = m/k;
 disp(mean_desviation);
 
 
