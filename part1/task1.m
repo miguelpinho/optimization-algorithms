@@ -11,8 +11,6 @@
 %         - Miguel Pinho, 80826,  miguel.m.pinho@tecnico.ulisboa.pt
 %         - Pedro Mendes, 81046,  pedrogoncalomendes@tecnico.ulisboa.pt
 %
-%
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all;
@@ -36,7 +34,7 @@ cvx_begin quiet
     
     f_regularizer = 0;
     for i=2:1:T
-        f_regularizer = f_regularizer + square_pos ( norm(u(:, i)-u(:, i-1)) );
+        f_regularizer = f_regularizer + square_pos ( norm(u(:, i)-u(:, i-1), 2) );
     end
     
     f = f_waypoints + lambda1 * f_regularizer;
@@ -57,7 +55,6 @@ cvx_begin quiet
     
 cvx_end;
 
-
 m=0;
 for i=1:1:k
     m = m + norm(E * x(:, tau(i)+1) - w(:, i), 2);
@@ -65,6 +62,5 @@ end
 
 mean_desviation = m/k;
 disp(mean_desviation);
-
 
 plot_graphs(x, u, tau+1, w);

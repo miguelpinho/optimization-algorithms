@@ -34,7 +34,7 @@ cvx_begin quiet
     
     f_regularizer = 0;
     for i=2:1:T
-        f_regularizer = f_regularizer + norm(u(:, i)-u(:, i-1), 2);
+        f_regularizer = f_regularizer + norm(u(:, i)-u(:, i-1), 1);
     end
     
     f = f_waypoints + lambda1 * f_regularizer;
