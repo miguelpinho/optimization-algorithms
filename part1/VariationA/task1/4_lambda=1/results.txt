@@ -1,0 +1,7 @@
+How many times the optimal control signal changes from t=1 to t=T-1?
+
+	- 79
+
+Mean deviation
+
+	- 3.6826
