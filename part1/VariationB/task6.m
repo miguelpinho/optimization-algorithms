@@ -30,7 +30,7 @@ cvx_begin quiet
     %cost function
     f_waypoints = 0;
     for i=1:1:k
-        f_waypoints = f_waypoints + square_pos( norm(E * x(:, tau(i) + 1) - w(:, i), 2) ); %ToDo: change this
+        f_waypoints = f_waypoints + square_pos(task5( E * x(:, tau(i)),  c(:, i), 2));
     end
     
     f_regularizer = 0;
@@ -57,7 +57,7 @@ cvx_begin quiet
 cvx_end;
 
 %plot the results
-plot_graphs(x, u, tau+1, w);
+plot_graphs(x, u, tau+1, c);
 
 
 %changes in control signal
@@ -71,7 +71,7 @@ end
 %calculation of mean deviation
 m=0;
 for i=1:1:k
-    m = m + norm(E * x(:, tau(i)+1) - w(:, i), 2);
+    m = m + norm(E * x(:, tau(i)+1) - c(:, i), 2);
 end
 mean_desviation = m/k;
 
