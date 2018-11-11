@@ -19,9 +19,7 @@ clear all;
 close all;
 
 %load the workspace
-load('dataA.mat');
-
-Umax2 = 15;
+load('dataC.mat');
 
 % solve optimization problem
 cvx_begin quiet
@@ -43,7 +41,7 @@ cvx_begin quiet
     x(:,T+1) == finalx;
 
     for t = 1:T
-        norm( u(:,t)) <= Umax2;
+        norm( u(:,t)) <= Umax;
     end
 
     for t = 1:T
