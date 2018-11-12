@@ -16,6 +16,8 @@
 clear all;
 close all;
 
+radius = 2;
+
 %load the workspace 
 load('dataB.mat');
 
@@ -30,7 +32,8 @@ cvx_begin quiet
     %cost function
     f_waypoints = 0;
     for i=1:1:k
-        f_waypoints = f_waypoints + square_pos(task5( E * x(:, tau(i)),  c(:, i), 2));
+        % f_waypoints = f_waypoints + square_pos(task5( E * x(:, tau(i)),  c(:, i), 2));
+        f_waypoints = f_waypoints + pos(norm((E * x(:, tau(i))) - c(:, i) ) - radius)
     end
     
     f_regularizer = 0;
