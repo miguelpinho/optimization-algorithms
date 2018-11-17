@@ -58,8 +58,8 @@ for L=1:1:length(lambda)
     plot_graphs(x, u, tau+1, w);
 
     % save plots
-    saveas(figure(1), strcat('Figures/task1/lambda_', num2str(lambda(L)), '_position.png'));
-    saveas(figure(2), strcat('Figures/task1/lambda_', num2str(lambda(L)), '_control.png'));
+    saveas(figure(1), strcat('Figures/task1/lambda_', num2str(lambda(L)), '_position.pdf'));
+    saveas(figure(2), strcat('Figures/task1/lambda_', num2str(lambda(L)), '_control.pdf'));
 
     % changes in control signal
     counter = 0;

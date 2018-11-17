@@ -60,8 +60,8 @@ load('dataA.mat');
     plot_graphs(x, u, tau+1, w);
  
     % save plots
-    saveas(figure(1), strcat('Figures/task3/lambda_', num2str(lambda(L)), '_position.png'));
-    saveas(figure(2), strcat('Figures/task3/lambda_', num2str(lambda(L)), '_control.png'));
+    saveas(figure(1), strcat('Figures/task3/lambda_', num2str(lambda(L)), '_position.pdf'));
+    saveas(figure(2), strcat('Figures/task3/lambda_', num2str(lambda(L)), '_control.pdf'));
 
     
     %changes in control signal
@@ -85,6 +85,6 @@ load('dataA.mat');
     str2 = ['Mean deviation = ', num2str(mean_deviation)];
     disp(str2);
     
-    
+    close all
     
 end
