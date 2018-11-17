@@ -74,7 +74,7 @@ end
 %calculation of mean deviation
 m=0;
 for i=1:1:k
-    m = m + norm(E * x(:, tau(i)+1) - c(:, i), 2);
+    m = m + pos(norm((E * x(:, tau(i))) - c(:, i) ) - radius);
 end
 mean_desviation = m/k;
 
