@@ -50,6 +50,12 @@ cvx_begin quiet
 
 cvx_end;
 
+% plot postions and control signals
+plot_graphs(x, u, tau+1, w);
+
+% save plots
+saveas(figure(1), strcat('Figures/task10/position.png'));
+saveas(figure(2), strcat('Figures/task10/control.png'));
 
 captured=0;
 for i=1:1:k
@@ -63,5 +69,4 @@ end
 
 disp(captured);
 
-
-plot_graphs(x, u, tau+1, w);
+close all;
