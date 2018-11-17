@@ -52,17 +52,23 @@ for m=1:1:(iter+1)
         for t = 1:T
             x(:, t+1) == A * x(:, t) + B * u(:, t);
         end
-
     cvx_end;
 
+    % plot postions and control signals
     plot_graphs(x, u, tau+1, w);
+
+    % save plots
+    saveas(figure(1), strcat('Figures/task11/iter_', num2str(m - 1), '_position.png'));
+    saveas(figure(2), strcat('Figures/task11/iter_', num2str(m - 1), '_control.png'));
 
     % calc new weights
     for i=1:1:k
        weights(i) = 1 / (norm(E * x(:, tau(i)+1) - w(:, i), 2) + epson);
     end
-    
+
     disp(weights);
+
+    close all;
 end
 
 captured=0;
