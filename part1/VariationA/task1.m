@@ -74,10 +74,12 @@ for L=1:1:length(lambda)
     for i=1:1:k
         m = m + norm(E * x(:, tau(i)+1) - w(:, i), 2);
     end
-    mean_desviation = m/k;
-
-    disp(counter);
-    disp(mean_desviation);
+    mean_deviation = m/k;
+    
+    str1 = ['Number of changes of the control signal = ', num2str(counter)];
+    disp(str1);
+    str2 = ['Mean deviation = ', num2str(mean_deviation)];
+    disp(str2);
 
     close all;
 end
