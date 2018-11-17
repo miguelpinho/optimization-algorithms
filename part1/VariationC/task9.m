@@ -6,7 +6,7 @@
 %
 %
 %
-%   Authors: 
+%   Authors:
 %         - Duarte Dias,  81356,  duarte.ferreira.dias@tecnico.ulisboa.pt
 %         - Miguel Pinho, 80826,  miguel.m.pinho@tecnico.ulisboa.pt
 %         - Pedro Mendes, 81046,  pedrogoncalomendes@tecnico.ulisboa.pt
@@ -50,11 +50,17 @@ cvx_begin quiet
 
 cvx_end;
 
+% plot postions and control signals
+plot_graphs(x, u, tau+1, w);
+
+% save plots
+saveas(figure(1), strcat('Figures/task9/position.png'));
+saveas(figure(2), strcat('Figures/task9/control.png'));
 
 captured=0;
 for i=1:1:k
     dw = norm(E * x(:, tau(i)+1) - w(:, i), 2);
-    
+
     %disp(dw);
     if dw <= 10^-6
         captured = captured + 1;
@@ -63,5 +69,4 @@ end
 
 disp(captured);
 
-
-plot_graphs(x, u, tau+1, w);
+close all;
