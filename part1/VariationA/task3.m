@@ -60,8 +60,10 @@ load('dataA.mat');
     plot_graphs(x, u, tau+1, w);
  
     % save plots
-    saveas(figure(1), strcat('Figures/task3/lambda_', num2str(lambda(L)), '_position.pdf'));
-    saveas(figure(2), strcat('Figures/task3/lambda_', num2str(lambda(L)), '_control.pdf'));
+    str = num2str(lambda(L));
+    save_str = strrep(str,'.',',');
+    saveas(figure(1), strcat('Figures/task3/lambda_', save_str , '_position.pdf'));
+    saveas(figure(2), strcat('Figures/task3/lambda_', save_str , '_control.pdf'));
 
     
     %changes in control signal

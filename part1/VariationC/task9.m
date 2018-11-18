@@ -27,12 +27,10 @@ cvx_begin quiet
     variable u(2,   T); % columns are R^2 control signal
 
     %cost function
-    f_waypoints = 0;
+    f = 0;
     for i=1:1:k
-        f_waypoints = f_waypoints + square_pos( norm(E * x(:, tau(i) + 1) - w(:, i), 2) );
+        f = f + square_pos( norm(E * x(:, tau(i) + 1) - w(:, i), 2) );
     end
-
-    f = f_waypoints;
 
     minimize( f );
 
@@ -54,8 +52,8 @@ cvx_end;
 plot_graphs(x, u, tau+1, w);
 
 % save plots
-saveas(figure(1), strcat('Figures/task9/position.png'));
-saveas(figure(2), strcat('Figures/task9/control.png'));
+saveas(figure(1), strcat('Figures/task9/position.pdf'));
+saveas(figure(2), strcat('Figures/task9/control.pdf'));
 
 captured=0;
 for i=1:1:k
@@ -67,6 +65,7 @@ for i=1:1:k
     end
 end
 
-disp(captured);
+str1 = ['Number of waypoints capture by the robot = ', num2str(captured)];
+disp(str1);
 
 close all;
