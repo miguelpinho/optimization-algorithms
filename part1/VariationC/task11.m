@@ -76,7 +76,7 @@ for m=1:1:iter
     end
 
 
-    str1 = ['Number of waypoints capture by the robot = ', num2str(captured)];
+    str1 = ['Number of waypoints capture on iteration ', num2str(m - 1), ' = ', num2str(captured)];
     disp(str1);
 
     close all;
