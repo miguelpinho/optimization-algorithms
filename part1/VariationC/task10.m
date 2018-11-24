@@ -52,8 +52,8 @@ cvx_end;
 plot_graphs(x, u, tau+1, w);
 
 % save plots
-saveas(figure(1), strcat('Figures/task10/position.pdf'));
-saveas(figure(2), strcat('Figures/task10/control.pdf'));
+saveas(figure(1), 'Figures/task10/position.pdf');
+saveas(figure(2), 'Figures/task10/control.pdf');
 
 captured=0;
 for i=1:1:k
