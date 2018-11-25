@@ -25,6 +25,9 @@ tolerance = power(10, -6);
 iter = 0;
 diff = 1;
 
+%indentity matrix 16x16
+I = eye(16);
+
 %each sensor is connected to 2 anchors and other 3 sensor - initialization 
 %of matrix Msp 16x3 containing the positions of each sensor
 Msp = zeros(16, 3);
@@ -34,12 +37,18 @@ end
 
 Msq = zeros(16, 3);
 l = 1;
+j = 1;
 for i=1:1:size(iS)
-    for j = 1:1:4
-        Msq(l:l+1 , j) = xinit(iS(i,2));
+    Msq(l:l+1 , j) = xinit(2*iS(i,2)-1:2*iS(i,2));
+    j = j + 1;
+    if j==4
+       j = 1;
+       l = l + 2;
     end
-    l = l + 2; 
 end
+
+Mspk = zeros(16, 3);
+Msqk = zeros(16, 3);
 
 
 %initialization of matrix to store the positions of sensor m and n that are
@@ -95,45 +104,53 @@ for i=1:1:size(iA)
    end
 end
     
-
-n_grad = norm(gradient);  
+g = gradient_f(As, Msp, Msq, y_new, z, iS);
+n_grad = norm( g ); 
 xk = xinit;
 
 while n_grad > tolerance
     
+    gradi_f = gradient_fp(As, Ms, Msq, iS);
+    func_f = f(As, Msp, Msq, y_new, z);
     
-    b = -f(As, Msp, Msq, y_new, z);
+    b_aux = gradi_f*xk  - func_f;
+    v_lambda = sqrt(lambda).*xk;
+    b = [b_aux; v_lambda];
     
-    belief = sum () + gradient_f1p()*(x-xk).^2 + lambda*vector_norm(x));
+    A_aux = sqrt(lambda) .* I;
+    A_ = [gradi_f; A_aux];
     
-    beliaf = A\b;
+    belief = A_\b;
     
-    if f(belief) < f(xk) 
+        
+    for i=1:2:16
+        Mspk(i:i+1, :) = repmat(belief(i:i+1), 1, 3); 
+    end
+    l = 1;
+    for i=1:1:size(iS)
+        for j = 1:1:4
+            Msqk(l:l+1 , j) = belief(2*iS(i,2)-1:2*iS(i,2));
+        end
+        l = l + 2; 
+    end
+    
+    
+    f_belief = sum(f(As, Mspk, Msqk, y_new, z).^2);
+    f_xk = sum(func_f.^2 );
+    
+    if f_belief < f_xk 
         xk = belief;
         lambda = 0.7* lambda;
+        Msp = Mspk;
+        Msq = Msqk;
     else
         lambda = 2* lambda;
     end
         
     iter = iter+1;
-
     
     %data for the next iteration 
-    n_grad = norm(gradient);  
-    
-    
-    for i=1:2:16
-        Msp(i:i+1, :) = repmat(xk(i:i+1), 1, 3); 
-    end
-    
-    l = 1;
-    for i=1:1:size(iS)
-        for j = 1:1:4
-            Msq(l:l+1 , j) = xk(iS(i,2));
-        end
-        l = l + 2; 
-    end
-    
+    n_grad = norm( gradient_f(As, Msp, Msq, y_new, z, iS) );    
     
 end
 
