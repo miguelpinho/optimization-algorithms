@@ -1,10 +1,15 @@
-function [grad_f] = gradient_f(A_s, M_sp, M_sq, y, z, iS)
+function [gradientf] = gradient_f(A, iA, iS, B, y, z, x, E)
 %return a column of 16x1 with all the parcial derivatives of f
-    grad_f = zeros(16, 1);
+    sA =  size(iA, 1); 
+    sS =  size(iS, 1);
+    grad_f = zeros(16, sS+sA);
 
-    for p=1:1:8
-         grad_f(2*p-1:2*p) = calculate_grad_f(A_s(2*p-1:2*p, :), M_sp(2*p-1:2*p,:), M_sq(2*p-1:2*p,:), y(2*p-1:2*p), z(3*p-2:3*p), iS, p, z, M_sp);
+    for i=1:1:sA
+        grad_f(:,i) = 2*(norm(A(:,iA(i,1))-B(:,:,iA(i,2))*x)-y(i))*(-B(:,:,iA(i,2))'*(A(:,iA(i,1))-B(:,:,iA(i,2))*x))./(norm(A(:,iA(i,1))-B(:,:,iA(i,2))*x));  
     end
-    
-   
+    for i=1:1:sS
+        grad_f(:,i+sA) = 2*(norm(E(:,:,i)*x)-z(i))*(E(:,:,i)'*(E(:,:,i)*x))./(norm(E(:,:,i)*x));
+    end
+   %sum of the rows
+   gradientf = sum(grad_f, 2);
 end
