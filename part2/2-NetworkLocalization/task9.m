@@ -17,13 +17,48 @@ clear all;
 close all;
 
 %load the workspace
-load('lmdata1.mat');
+load('lmdata2.mat');
 
 lambda = 1;
 tolerance = power(10, -6);
 
 iter = 0;
 plot_n_grad = [];
+
+%initial position
+% xinit = [  6.553; 
+%          -0.281;
+%           -0.882;
+%           -1.514;
+%           -5.780;
+%            1.564;
+%           -6.163;
+%           -0.809;
+%           -0.825;
+%            2.535;
+%           -8.313;
+%            2.754;
+%           -1.557;
+%           -3.879;
+%           -0.026;
+%           0.7001];
+
+xinit = [  7; 
+          -0.2;
+          -1;
+          -1.5;
+          -5;
+           1.6;
+          -6;
+          -1;
+          -0.8;
+           2.5;
+          -8;
+           2;
+          -1;
+          -4;
+          -0;
+          0.7];
 
 %indentity matrix 16x16
 I = eye(2);
@@ -79,4 +114,4 @@ sensor = zeros(2,8);
 for i=1:1:8
     sensor(:,i) = xk(2*i-1:2*i);
 end
-plotgraph(A, iA, iS, sensor, xinit, S, plot_n_grad, iter);
+plotgraph_task9(A, iA, iS, sensor, xinit, plot_n_grad, iter);
