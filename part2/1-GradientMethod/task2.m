@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %               Optimization and Algorithms
 %
@@ -15,7 +15,7 @@
 
 clear all;
 close all;
-
+ 
 %load the workspace
 load('data1.mat');
 
@@ -23,68 +23,48 @@ load('data1.mat');
 %Gradient method
 %%%%%%%%%%%%%%%%
 
+%Amount of input features
+k = 150;
+
 %Stopping criterion constants
 s0 = [-1 -1];
 r0 = 5;
 epslon = 10^(-6);
 
+%Initial point for gradient descent
+t0 = [s0 r0]'
+
 %Backtracking parameters
-alpha = 1;
+alpha = [1; 1; 1];
 y = 10^(-4);
-beta = 0.5;
+beta = [0.5; 0.5; 0.5];
 
-%Function to minimize f(s1, s2, r)
-syms f(s1, s2, r);
-for k = 1:150
-   f = f + (log(1 + exp([s1 s2]*X(:,k) - r)) - Y(k)*([s1 s2]*X(:,k) - r)); 
-end
-%We can now call the function like this:
-%result = f(-1, -1, 0);
+%Transformation of X
+X_hat = [X; ones(length(X), 1).'];
 
-%Function derivative g(s1, s2, r)
-g1 = diff(f, s1)
-g2 = diff(f, s2)
-g3 = diff(f, r)
-%Likewise, we can now call the function like this:
-%result = g(-1, -1, 0)
+%Function to minimize f(s, r)
+%We transform that function into:
+%f = (log(1 + exp(X_hat.*t)) - (Y.').*(X_hat.*t));
+%We can call the function like this:
+%x1 = f_hat([1; 1; 1], X_hat, Y, 150)
 
-%Define initial values for s and r
-s1 = -1;
-s2 = -1;
-r = 0;
+%Function derivative
+%f' = (exp(X_hat'*t)/(1 + exp(X_hat'*t))) - Y
+%We can call the function like this
+%x2 = gradient_f_hat([1; 1; 1], X_hat, Y, 150)
 
 
-
-%Algorithm
-%We need to backtrack for each variable s1, s2, r
-while g1(s1, s2, r) > epslon 
-    %For variable s1
-    d1 = -g1(s1, s2, r);
-    while f(s1 + alpha1*d1, s2, r) < f(s1, s2, r) + y * g1(alpha1*beta1, s2, r)
-        alpha1 = beta1 - alpha1
+%Algorithm - Gradient Descent
+t = t0
+while norm(gradient_f_hat(t, X_hat, Y, k)) > epslon 
+    d = -gradient_f_hat(t0, X_hat, Y, k);
+    while f_hat(t + alpha*d, X_hat, Y, k) < f_hat(t, X_hat, Y, k) + (y*gradient_f_hat(alpha.*beta, X_hat, Y, k))
+        alpha = beta - alpha;
     end
-    s1 = s1 + alpha1 * d1
+    t = t + alpha * d;
 end
 
-while g2(s1, s2, r) > epslon
-    %For variable s2
-    d2 = -g1(s1, s2, r);
-    while f(s1, s2 + alpha2*d2, r) < f(s1, s2, r) + y * g2(s1, alpha2*beta2, r)
-        alpha2 = beta2 - alpha2
-    end
-    s2 = s2 + alpha2 * d2
-end
-    
-while g3(s1, s2, r) > epslon
-    %for variable r
-    d3 = -g3(s1, s2, r);
-    while f(s1, s2, r+ alpha3*d3) < f(s1, s2, r) + y * g3(s1, s2, alpha3*beta3)
-        alpha3 = beta3 - alpha3
-    end
-    r = r + alpha3 * d3
-end
-
-
+t
 
 
 %Plot data points
@@ -98,4 +78,8 @@ for i = 1:150
     end
 end
 
+%Plot resulting line
+xResult = -2:0.001:6;
+yResult = (t(3)/t(2)) - (t(1)/t(2))*xResult;
+plot(xResult, yResult,['--', 'g'], 'LineWidth', 2)
 
