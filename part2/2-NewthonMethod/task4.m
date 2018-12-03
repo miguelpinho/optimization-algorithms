@@ -56,10 +56,11 @@ X_hat = [X; ones(length(X), 1).'];
 
 %Algorithm - Gradient Descent
 t = t0
-while norm(gradient_f_hat(t, X_hat, Y, k)) > epslon 
-    d = gradient_f_hat(t, X_hat, Y, k);
+while norm(gradient_f_hat(t, X_hat, Y, k)) > epslon
+    % d needs to be a 1x3 vector!!! Use partial derivatives?
+    d = -gradient_f_hat(t, X_hat, Y, k)/gradient2_f_hat(t, X_hat, Y, k);
     alpha = alpha0;
-    while f_hat(t + alpha*d, X_hat, Y, k) > f_hat(t, X_hat, Y, k) + (y*gradient_f_hat(alpha.*beta, X_hat, Y, k))
+    while f_hat(t + alpha*d, X_hat, Y, k) > f_hat(t, X_hat, Y, k) + (y*gradient_f_hat(t, X_hat, Y, k)*(alpha.*beta))
         alpha = beta .* alpha;
     end
     t = t + (alpha .* d)

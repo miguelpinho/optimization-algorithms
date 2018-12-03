@@ -53,15 +53,16 @@ X_hat = [X; ones(length(X), 1).'];
 %We can call the function like this
 %x2 = gradient_f_hat([1; 1; 1], X_hat, Y, 150)
 
-
 %Algorithm - Gradient Descent
 t = t0
-while norm(gradient_f_hat(t, X_hat, Y, k)) > epslon
-    % d needs to be a 1x3 vector!!! Use partial derivatives?
-    d = -gradient_f_hat(t, X_hat, Y, k)/gradient2_f_hat(t, X_hat, Y, k);
+while norm(GradF(t)) > epslon
+    d = -GradF(t);
     alpha = alpha0;
-    while f_hat(t + alpha*d, X_hat, Y, k) > f_hat(t, X_hat, Y, k) + (y*gradient_f_hat(t, X_hat, Y, k)*(alpha.*beta))
+    flag = 0;
+    %alpha.*d should be a value instead of 1x3 vector?
+    while f_hat(t + alpha.*d, X_hat, Y, k) > f_hat(t, X_hat, Y, k) + (y.*gradient_f_hat(t, X_hat, Y, k)*(alpha.*d))
         alpha = beta .* alpha;
+        flag = flag + 1;
     end
     t = t + (alpha .* d)
     f_hat(t, X_hat, Y, k)
