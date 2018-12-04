@@ -54,21 +54,23 @@ X_hat = [X; ones(length(X), 1).'];
 %x2 = gradient_f_hat([1; 1; 1], X_hat, Y, 150)
 
 
-%Algorithm - Gradient Descent
+%Algorithm - Newton Method
 t = t0
-while norm(gradient_f_hat(t, X_hat, Y, k)) > epslon
-    % d needs to be a 1x3 vector!!! Use partial derivatives?
-    d = -gradient_f_hat(t, X_hat, Y, k)/gradient2_f_hat(t, X_hat, Y, k);
-    alpha = alpha0;
-    while f_hat(t + alpha*d, X_hat, Y, k) > f_hat(t, X_hat, Y, k) + (y*gradient_f_hat(t, X_hat, Y, k)*(alpha.*beta))
+alpha = alpha0;
+while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
+    g = gradient_f_hat(t, X_hat, Y, k)
+    d = -(hessian_f_hat(t, X_hat, Y, k)\g)
+    %alpha = alpha0;
+    while f_hat(t + alpha.*d, X_hat, Y, k) >= f_hat(t, X_hat, Y, k) + (y.*g'*(alpha.*d))
         alpha = beta .* alpha;
     end
     t = t + (alpha .* d)
     f_hat(t, X_hat, Y, k)
 end
 
-t
-
+s0 = t(1)
+s1 = t(2)
+r = -t(3)
 
 %Plot data points
 for i = 1:150
@@ -83,6 +85,6 @@ end
 
 %Plot resulting line
 xResult = -2:0.001:6;
-yResult = (t(3)/t(2)) - (t(1)/t(2))*xResult;
+yResult = (r/s1) - (s0/s1)*xResult;
 plot(xResult, yResult,['--', 'g'], 'LineWidth', 2)
 
