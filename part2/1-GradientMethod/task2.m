@@ -28,11 +28,11 @@ k = 150;
 
 %Stopping criterion constants
 s0 = [-1 -1];
-r0 = 5;
+r0 = 0;
 epslon = 10^(-6);
 
 %Initial point for gradient descent
-t0 = [s0 r0]'
+t0 = [s0 -r0]'
 
 %Backtracking parameters
 alpha0 = 1;
@@ -40,7 +40,7 @@ y = 10^(-4);
 beta = 0.5;
 
 %Transformation of X
-X_hat = [X; -ones(length(X), 1).'];
+X_hat = [X; ones(length(X), 1).'];
 
 %Function to minimize f(s, r)
 %We transform that function into:
@@ -54,7 +54,7 @@ X_hat = [X; -ones(length(X), 1).'];
 %x2 = gradient_f_hat([1; 1; 1], X_hat, Y, 150)
 
 %Algorithm - Gradient Descent
-t = -t0
+t = t0
 alpha = alpha0;
 gradients = [];
 while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
