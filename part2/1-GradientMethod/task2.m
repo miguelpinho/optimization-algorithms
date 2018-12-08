@@ -35,9 +35,9 @@ epslon = 10^(-6);
 t0 = [s0 -r0]'
 
 %Backtracking parameters
-alpha0 = [1; 1; 1];
+alpha0 = 1;
 y = 10^(-4);
-beta = [0.5; 0.5; 0.5];
+beta = 0.5;
 
 %Transformation of X
 X_hat = [X; ones(length(X), 1).'];
