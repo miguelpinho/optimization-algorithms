@@ -1,4 +1,4 @@
-0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %               Optimization and Algorithms
 %
@@ -56,22 +56,30 @@ X_hat = [X; ones(length(X), 1).'];
 %Algorithm - Gradient Descent
 t = t0
 alpha = alpha0;
+gradients = [];
 while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
     d = -gradient_f_hat(t, X_hat, Y, k);
-    %alpha = alpha0;
+    alpha = alpha0;
     %alpha.*d should be a value instead of 1x3 vector?
     while f_hat(t + alpha.*d, X_hat, Y, k) >= f_hat(t, X_hat, Y, k) + (y.*gradient_f_hat(t, X_hat, Y, k)'*(alpha.*d))
         alpha = beta .* alpha;
     end
     t = t + (alpha .* d)
-    f_hat(t, X_hat, Y, k)
+    %f_hat(t, X_hat, Y, k)
+    gradients = [gradients norm(gradient_f_hat(t, X_hat, Y, k))];
 end
+
+%plot figure with logarithmic y-axis
+figure;
+semilogy(gradients);
+grid on;
 
 s0 = t(1)
 s1 = t(2)
 r = -t(3)
 
 
+figure;
 %Plot data points
 for i = 1:150
     if Y(i) == 0
