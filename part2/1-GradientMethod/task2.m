@@ -32,15 +32,15 @@ r0 = 5;
 epslon = 10^(-6);
 
 %Initial point for gradient descent
-t0 = [s0 -r0]'
+t0 = [s0 r0]'
 
 %Backtracking parameters
-alpha0 = [1; 1; 1];
+alpha0 = 1;
 y = 10^(-4);
-beta = [0.5; 0.5; 0.5];
+beta = 0.5;
 
 %Transformation of X
-X_hat = [X; ones(length(X), 1).'];
+X_hat = [X; -ones(length(X), 1).'];
 
 %Function to minimize f(s, r)
 %We transform that function into:
@@ -54,13 +54,12 @@ X_hat = [X; ones(length(X), 1).'];
 %x2 = gradient_f_hat([1; 1; 1], X_hat, Y, 150)
 
 %Algorithm - Gradient Descent
-t = t0
+t = -t0
 alpha = alpha0;
 gradients = [];
 while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
     d = -gradient_f_hat(t, X_hat, Y, k);
     alpha = alpha0;
-    %alpha.*d should be a value instead of 1x3 vector?
     while f_hat(t + alpha.*d, X_hat, Y, k) >= f_hat(t, X_hat, Y, k) + (y.*gradient_f_hat(t, X_hat, Y, k)'*(alpha.*d))
         alpha = beta .* alpha;
     end
