@@ -32,7 +32,7 @@ r0 = 5;
 epslon = 10^(-6);
 
 %Initial point for gradient descent
-t0 = [s0 -r0]'
+t0 = [s0 r0]'
 
 %Backtracking parameters
 alpha0 = 1;
@@ -40,7 +40,7 @@ y = 10^(-4);
 beta = 0.5;
 
 %Transformation of X
-X_hat = [X; ones(length(X), 1).'];
+X_hat = [X; -ones(length(X), 1).'];
 
 %Function to minimize f(s, r)
 %We transform that function into:
@@ -55,13 +55,13 @@ X_hat = [X; ones(length(X), 1).'];
 
 
 %Algorithm - Newton Method
-t = t0
+t = -t0;
 alpha = alpha0;
 alphas = [];
 gradients = [];
 while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
-    g = gradient_f_hat(t, X_hat, Y, k)
-    d = -(hessian_f_hat(t, X_hat, Y, k)\g)
+    g = gradient_f_hat(t, X_hat, Y, k);
+    d = -(hessian_f_hat(t, X_hat, Y, k)\g);
     alpha = alpha0;
     while f_hat(t + alpha.*d, X_hat, Y, k) >= f_hat(t, X_hat, Y, k) + (y.*g'*(alpha.*d))
         alpha = beta .* alpha;
