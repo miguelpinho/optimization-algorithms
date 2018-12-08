@@ -35,9 +35,9 @@ epslon = 10^(-6);
 t0 = [s0 -r0]'
 
 %Backtracking parameters
-alpha0 = [1; 1; 1];
+alpha0 = 1;
 y = 10^(-4);
-beta = [0.5; 0.5; 0.5];
+beta = 0.5;
 
 %Transformation of X
 X_hat = [X; ones(length(X), 1).'];
@@ -69,7 +69,7 @@ while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
     t = t + (alpha .* d)
     %f_hat(t, X_hat, Y, k)
     gradients = [gradients norm(gradient_f_hat(t, X_hat, Y, k))];
-    alphas = [alphas norm(alpha)];
+    alphas = [alphas alpha];
 end
 
 %plot alpha for each iteration
