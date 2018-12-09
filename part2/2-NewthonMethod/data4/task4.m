@@ -24,19 +24,15 @@ load('dataset4.mat');
 %%%%%%%%%%%%%%%%
 
 %Amount of input features
-k = 8000;
-n = 100;
+[n, k] = size(X);
 
 %Stopping criterion constants
-s0 = [];
-for i = 1:n
-    s0 = [s0 -1];
-end
+s0 = -ones(1, n);
 r0 = 0;
 epslon = 10^(-6);
 
 %Initial point for gradient descent
-t0 = [s0 -r0]'
+t0 = [s0 r0]'
 
 %Backtracking parameters
 alpha0 = 1;
@@ -44,7 +40,7 @@ y = 10^(-4);
 beta = 0.5;
 
 %Transformation of X
-X_hat = [X; ones(length(X), 1).'];
+X_hat = [X; -ones(length(X), 1)'];
 
 %Function to minimize f(s, r)
 %We transform that function into:
@@ -70,7 +66,7 @@ while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
     while f_hat(t + alpha.*d, X_hat, Y, k) >= f_hat(t, X_hat, Y, k) + (y.*g'*(alpha.*d))
         alpha = beta .* alpha;
     end
-    t = t + (alpha .* d)
+    t = t + (alpha .* d);
     %f_hat(t, X_hat, Y, k)
     gradients = [gradients norm(gradient_f_hat(t, X_hat, Y, k))];
     alphas = [alphas alpha];
@@ -85,28 +81,8 @@ figure;
 semilogy(gradients);
 grid on;
 
-s =[]
-for i = 1:n
-    s = [s t(i)];
-end
+iter = length(gradients)
 
-s
-r = -t(3)
-
-figure;
-%Plot data points
-for i = 1:150
-    if Y(i) == 0
-        scatter(X(1, i), X(2, i), [], 'red');
-        hold on
-    else
-        scatter(X(1, i), X(2, i), [], 'blue');
-        hold on
-    end
-end
-
-%Plot resulting line
-xResult = -2:0.001:6;
-yResult = (r/s1) - (s0/s1)*xResult;
-plot(xResult, yResult,['--', 'g'], 'LineWidth', 2)
+s = t(1:n)
+r = t(n+1)
 
