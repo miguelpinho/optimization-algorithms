@@ -17,17 +17,21 @@ clear all;
 close all;
  
 %load the workspace
-load('data1.mat');
+load('data3.mat');
 
 %%%%%%%%%%%%%%%%
 %Gradient method
 %%%%%%%%%%%%%%%%
 
 %Amount of input features
-k = 150;
+k = 500;
+n = 30;
 
 %Stopping criterion constants
-s0 = [-1 -1];
+s0 = [];
+for i = 1:n
+    s0 = [s0 -1];
+end
 r0 = 0;
 epslon = 10^(-6);
 
@@ -53,30 +57,41 @@ X_hat = [X; ones(length(X), 1).'];
 %We can call the function like this
 %x2 = gradient_f_hat([1; 1; 1], X_hat, Y, 150)
 
-%Algorithm - Gradient Descent
-t = t0
+
+%Algorithm - Newton Method
+t = t0;
 alpha = alpha0;
+alphas = [];
 gradients = [];
 while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
-    d = -gradient_f_hat(t, X_hat, Y, k);
+    g = gradient_f_hat(t, X_hat, Y, k);
+    d = -(hessian_f_hat(t, X_hat, Y, k)\g);
     alpha = alpha0;
-    while f_hat(t + alpha.*d, X_hat, Y, k) >= f_hat(t, X_hat, Y, k) + (y.*gradient_f_hat(t, X_hat, Y, k)'*(alpha.*d))
+    while f_hat(t + alpha.*d, X_hat, Y, k) >= f_hat(t, X_hat, Y, k) + (y.*g'*(alpha.*d))
         alpha = beta .* alpha;
     end
     t = t + (alpha .* d)
     %f_hat(t, X_hat, Y, k)
     gradients = [gradients norm(gradient_f_hat(t, X_hat, Y, k))];
+    alphas = [alphas alpha];
 end
+
+%plot alpha for each iteration
+figure;
+stem(alphas);
 
 %plot figure with logarithmic y-axis
 figure;
 semilogy(gradients);
 grid on;
 
-s0 = t(1)
-s1 = t(2)
-r = -t(3)
+s =[]
+for i = 1:n
+    s = [s t(i)];
+end
 
+s
+r = -t(3)
 
 figure;
 %Plot data points

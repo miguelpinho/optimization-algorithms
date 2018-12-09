@@ -1,4 +1,4 @@
-0%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %               Optimization and Algorithms
 %
@@ -17,7 +17,7 @@ clear all;
 close all;
  
 %load the workspace
-load('data1.mat');
+load('data2.mat');
 
 %%%%%%%%%%%%%%%%
 %Gradient method
@@ -32,7 +32,7 @@ r0 = 0;
 epslon = 10^(-6);
 
 %Initial point for gradient descent
-t0 = [s0 -r0]'
+t0 = [s0 r0]'
 
 %Backtracking parameters
 alpha0 = 1;
@@ -40,7 +40,7 @@ y = 10^(-4);
 beta = 0.5;
 
 %Transformation of X
-X_hat = [X; ones(length(X), 1).'];
+X_hat = [X; -ones(length(X), 1).'];
 
 %Function to minimize f(s, r)
 %We transform that function into:
@@ -98,7 +98,7 @@ for i = 1:150
 end
 
 %Plot resulting line
-xResult = -2:0.001:6;
+xResult = -3:0.001:5;
 yResult = (r/s1) - (s0/s1)*xResult;
 plot(xResult, yResult,['--', 'g'], 'LineWidth', 2)
 
