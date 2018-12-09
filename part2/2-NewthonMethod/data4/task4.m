@@ -17,15 +17,15 @@ clear all;
 close all;
  
 %load the workspace
-load('data3.mat');
+load('dataset4.mat');
 
 %%%%%%%%%%%%%%%%
 %Gradient method
 %%%%%%%%%%%%%%%%
 
 %Amount of input features
-k = 500;
-n = 30;
+k = 8000;
+n = 100;
 
 %Stopping criterion constants
 s0 = [];
