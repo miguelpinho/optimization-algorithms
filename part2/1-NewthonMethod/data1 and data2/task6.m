@@ -42,18 +42,6 @@ beta = 0.5;
 %Transformation of X
 X_hat = [X; -ones(length(X), 1).'];
 
-%Function to minimize f(s, r)
-%We transform that function into:
-%f = (log(1 + exp(X_hat.*t)) - (Y.').*(X_hat.*t));
-%We can call the function like this:
-%x1 = f_hat([1; 1; 1], X_hat, Y, 150)
-
-%Function derivative
-%f' = (exp(X_hat'*t)/(1 + exp(X_hat'*t))) - Y
-%We can call the function like this
-%x2 = gradient_f_hat([1; 1; 1], X_hat, Y, 150)
-
-
 %Algorithm - Newton Method
 t = t0;
 alpha = alpha0;
