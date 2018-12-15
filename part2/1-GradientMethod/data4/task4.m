@@ -73,8 +73,17 @@ figure;
 semilogy(gradients);
 grid on;
 
+<<<<<<< Updated upstream
 iter = length(gradients)
 
 s = t(1:n)
 r = t(n+1)
+=======
+s =[]
+for i = 1:n
+    s = [s t(i)];
+end
+s
+r = -t(3)
+>>>>>>> Stashed changes
 
