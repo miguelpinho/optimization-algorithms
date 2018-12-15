@@ -24,14 +24,10 @@ load('data3.mat');
 %%%%%%%%%%%%%%%%
 
 %Amount of input features
-k = 500;
-n = 30;
+[n, k] = size(X);
 
 %Stopping criterion constants
-s0 = [];
-for i = 1:n
-    s0 = [s0 -1];
-end
+s0 = -ones(1, n);
 r0 = 0;
 epslon = 10^(-6);
 
@@ -44,7 +40,7 @@ y = 10^(-4);
 beta = 0.5;
 
 %Transformation of X
-X_hat = [X; -ones(length(X), 1).'];
+X_hat = [X; -ones(length(X), 1)'];
 
 %Function to minimize f(s, r)
 %We transform that function into:
@@ -58,7 +54,7 @@ X_hat = [X; -ones(length(X), 1).'];
 %x2 = gradient_f_hat([1; 1; 1], X_hat, Y, 150)
 
 %Algorithm - Gradient Descent
-t = t0
+t = t0;
 alpha = alpha0;
 gradients = [];
 while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
@@ -67,7 +63,7 @@ while norm(gradient_f_hat(t, X_hat, Y, k)) >= epslon
     while f_hat(t + alpha.*d, X_hat, Y, k) >= f_hat(t, X_hat, Y, k) + (y.*gradient_f_hat(t, X_hat, Y, k)'*(alpha.*d))
         alpha = beta .* alpha;
     end
-    t = t + (alpha .* d)
+    t = t + (alpha .* d);
     %f_hat(t, X_hat, Y, k)
     gradients = [gradients norm(gradient_f_hat(t, X_hat, Y, k))];
 end
@@ -77,27 +73,11 @@ figure;
 semilogy(gradients);
 grid on;
 
-s =[]
-for i = 1:n
-    s = [s t(i)];
-end
-r = -t(3)
+iter = length(gradients)
+
+s = t(1:n)
+r = t(n+1)
 
 
-figure;
-%Plot data points
-for i = 1:150
-    if Y(i) == 0
-        scatter(X(1, i), X(2, i), [], 'red');
-        hold on
-    else
-        scatter(X(1, i), X(2, i), [], 'blue');
-        hold on
-    end
-end
 
-%Plot resulting line
-xResult = -3:0.001:5;
-yResult = (r/s1) - (s0/s1)*xResult;
-plot(xResult, yResult,['--', 'g'], 'LineWidth', 2)
 
