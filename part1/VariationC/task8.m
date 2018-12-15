@@ -25,4 +25,4 @@ axis([-3 3 -0.5 1.5]);
 xlabel('x');
 legend([f g], 'phi(x)', 'chord');
 
-saveas(figure(1), 'Figures/task8/convex_test.pdf');
+saveas(figure(1), 'Figures/task8/nonconvex.pdf');
